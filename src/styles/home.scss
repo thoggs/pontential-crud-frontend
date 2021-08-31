@@ -1,0 +1,23 @@
+.developers-container {
+  display: flex;
+  flex-direction: column;
+  padding: 100px;
+  margin-left: 200px;
+  margin-right: 200px;
+
+  .developers-add-button-item {
+    margin: 20px;
+    align-self: flex-end;
+  }
+
+  .developers-table-item {
+    flex-grow: 1;
+  }
+
+  .developers-paginator-item {
+    align-self: center;
+    margin: 30px;
+  }
+
+}
+
