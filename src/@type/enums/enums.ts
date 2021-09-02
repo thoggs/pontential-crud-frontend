@@ -4,3 +4,9 @@ export enum RequestType {
   POST = 'POST',
   DELETE = 'DELETE'
 }
+
+export enum Genre {
+  M = 'M',
+  F = 'F',
+  O = 'O'
+}
