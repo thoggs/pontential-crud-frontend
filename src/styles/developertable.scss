@@ -8,8 +8,26 @@
   display: block;
 }
 
+table,
+thead,
+tr,
+tbody,
+th,
+td {
+  text-align: center;
+}
 
+.table td {
+  text-align: center;
+}
 
-.text-danger-teste {
-  color: red;
+.table-tools {
+  border-radius: 8px;
+}
+
+td {
+  i {
+    font-size: 1.2rem;
+    cursor: pointer;
+  }
 }

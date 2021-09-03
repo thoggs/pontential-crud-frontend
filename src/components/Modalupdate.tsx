@@ -1,4 +1,3 @@
-import '../styles/modal.scss'
 import { Genre, RequestStatus } from "../@type/enums/enums";
 import { Dispatch, FormEvent, SetStateAction, useEffect, useState } from "react";
 import { fetchUpdateDeveloper } from "../services/developers.services";
@@ -7,51 +6,50 @@ import { DeveloperType } from "../@type/developers/developer.type";
 
 type ModaladdProps = {
   modalId: string,
-  developer: DeveloperType,
+  developer?: DeveloperType,
   onRequestStatus: Dispatch<SetStateAction<RequestStatus>>
 }
 
-export function Modaledit(props: ModaladdProps) {
+export function Modalupdate(props: ModaladdProps) {
   const [nome, setNome] = useState<string>('');
   const [idade, setIdade] = useState<string>('');
   const [sexo, setSexo] = useState<string>('');
   const [hobby, setHobby] = useState<string>('');
   const [datanascimento, setDatanascimento] = useState<string>('');
-  const {modalId, developer, onRequestStatus} = props;
+  const [close, setClose] = useState<boolean>();
+  let {modalId, developer, onRequestStatus} = props;
 
   useEffect(() => {
-    setNome(developer.nome);
-    setIdade(developer.idade);
-    setSexo(developer.sexo);
-    setHobby(developer.hobby);
-    setDatanascimento(developer.datanascimento);
-  }, [developer.datanascimento, developer.hobby, developer.idade, developer.nome, developer.sexo])
+    if (developer) {
+      setNome(developer.nome);
+      setIdade(developer.idade);
+      setSexo(developer.sexo);
+      setHobby(developer.hobby);
+      setDatanascimento(developer.datanascimento);
+      setClose(false)
+    }
+  }, [close, developer])
 
-  function handleAddDeveloper(event: FormEvent) {
+  function handleUpdateDeveloper(event: FormEvent) {
     event.preventDefault();
 
     if (!sexo)
       return
 
-    fetchUpdateDeveloper({
-      nome: nome,
-      idade: idade,
-      sexo: sexo,
-      hobby: hobby,
-      datanascimento: datanascimento
-    }).finally(() => {
-        setNome('');
-        setIdade('');
-        setSexo('');
-        setHobby('');
-        setDatanascimento('');
-
+    if (developer && developer.id) {
+      fetchUpdateDeveloper(developer.id,{
+        nome: nome,
+        idade: idade,
+        sexo: sexo,
+        hobby: hobby,
+        datanascimento: datanascimento
+      }).finally(() => {
         onRequestStatus(RequestStatus.SUCCESS)
         const btnEl = document.getElementById('update-modal-close-button');
         if (btnEl) btnEl.click();
-
       })
-      .catch(() => onRequestStatus(RequestStatus.ERROR))
+        .catch(() => onRequestStatus(RequestStatus.ERROR));
+    }
   }
 
   return (
@@ -62,10 +60,10 @@ export function Modaledit(props: ModaladdProps) {
          data-bs-keyboard="false">
       <div className="modal-dialog modal-xl">
         <div className="modal-content">
-          <form onSubmit={handleAddDeveloper}>
+          <form onSubmit={handleUpdateDeveloper}>
             <div className="modal-header">
               <h5 className="modal-title">
-                Alterar cadastro
+                Atualizar informações
               </h5>
               <button type="button"
                       className="btn-close"
@@ -151,6 +149,7 @@ export function Modaledit(props: ModaladdProps) {
             </div>
             <div className="modal-footer">
               <button
+                onClick={() => setClose(true)}
                 id='update-modal-close-button'
                 type="button"
                 className="btn btn-secondary"
@@ -162,7 +161,7 @@ export function Modaledit(props: ModaladdProps) {
                 type="submit"
                 className="btn btn-success">
                 <i className="bi-box-arrow-in-right me-2"/>
-                Enviar formulário
+                Alterar cadastro
               </button>
             </div>
           </form>

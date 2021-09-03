@@ -1,49 +1,172 @@
-import '../styles/home.scss';
-import { Navbar } from "../components/Navbar";
-import { Developertable } from "../components/Developertable";
+import { Developerstable } from "../components/Developertable";
 import { Modaladd } from "../components/Modaladd";
+import { Modalfilter } from "../components/Modalfilter";
+import React, { useEffect, useState } from "react";
+import { DeveloperType, ResponseBody } from "../@type/developers/developer.type";
+import { IsSignedStatus, RequestStatus } from "../@type/enums/enums";
+import { Pagination } from '@material-ui/lab';
+import { fetchAllDevelopers, fetchFilterDevelopers, fetchPagesWithPageNumber } from "../services/developers.services";
+import { createStyles, makeStyles } from "@material-ui/core";
+import { useHistory } from "react-router-dom";
+import { auth } from "../services/firebase";
+import { useAuth } from "../hooks/auth/useAuth";
 
+
+const useStyles = makeStyles((theme) =>
+  createStyles({
+    root: {
+      '& > * + *': {
+        marginTop: theme.spacing(2),
+      }
+    }
+  })
+)
 
 export function Home() {
+  const history = useHistory();
+  const authLogin = useAuth();
+  const [requestStatus, setRequestStatus] = useState<RequestStatus>(RequestStatus.SUCCESS);
+  const [developersList, setDevelopersList] = useState<Array<DeveloperType>>([]);
+  const [responseBody, setResponseBody] = useState<ResponseBody>();
+  const [query, setQuery] = useState<DeveloperType>();
+  const [totalPage, setTotalPage] = useState<number>(0)
+  const classes = useStyles();
 
-  return (
-    <>
-      <Navbar/>
-      <div className='developers-container'>
+  useEffect(() => {
+    const unsubscribe = auth.onAuthStateChanged(user => {
+      if (!user) {
+        authLogin.isSigned = IsSignedStatus.FALSE
+        history.push('/')
+      }
+    })
 
+    switch (requestStatus) {
+      case RequestStatus.SUCCESS:
+        if (query) {
+          fetchFilterDevelopers(query)
+            .then((result) => {
+              setDevelopersList(result.body.data)
+              setResponseBody(result.body)
+              setTotalPage(result.body.total)
+            })
+            .finally(() => setRequestStatus(RequestStatus.INITIAL_VALUE))
+        }
 
-        <div className="input-field col s6">
-          <input id="pesqiuisar" type="text" className="validate"/>
-          <label htmlFor="pesquisar">Pesquisar por desenvolvedor</label>
-        </div>
+        fetchAllDevelopers()
+          .then((result) => {
+            setDevelopersList(result.body.data)
+            setResponseBody(result.body)
+            setTotalPage(result.body.total)
+          })
+          .finally(() => setRequestStatus(RequestStatus.INITIAL_VALUE));
+        break
+    }
 
+    return () => {
+      unsubscribe();
+    }
 
-        <div className='developers-add-button-item'>
-          <button type="button" className="btn btn-primary" data-bs-toggle="modal"
-                  data-bs-target="#add-developer-modal">
-            <i className="material-icons">add</i>
-          </button>
-        </div>
+  }, [authLogin, history, query, requestStatus, totalPage])
 
+  const handleChange = (event: React.ChangeEvent<unknown>, page: number) => {
+    fetchPagesWithPageNumber(page)
+      .then((result) => setDevelopersList(result.body.data))
+  };
 
-        <Modaladd modalId={'add-modal'}/>
+  function handlePaginator() {
+    console.log(totalPage)
+    if (developersList && responseBody) {
+      const {last_page} = responseBody;
 
+      if (totalPage < 30) {
+        return
+      } else {
+        return (
+          <div className={classes.root}>
+            <Pagination count={last_page} onChange={handleChange}/>
+          </div>
+        )
+      }
+    }
 
-        <div className='developers-table-item'>
-          <Developertable/>
-        </div>
-        <div className='developers-paginator-item'>
-          <ul className="pagination">
-            <li className="disabled"><a href="#!"><i className="material-icons">chevron_left</i></a></li>
-            <li className="active"><a href="#!">1</a></li>
-            <li className="waves-effect"><a href="#!">2</a></li>
-            <li className="waves-effect"><a href="#!">3</a></li>
-            <li className="waves-effect"><a href="#!">4</a></li>
-            <li className="waves-effect"><a href="#!">5</a></li>
-            <li className="waves-effect"><a href="#!"><i className="material-icons">chevron_right</i></a></li>
-          </ul>
+  }
+
+  const spinner = (
+    <div className='custom-container-spinner'>
+      <div className="d-flex justify-content-center text-primary">
+        <div className="spinner-border spinner-custom-style" role="status">
+          <span className="visually-hidden">Loading...</span>
         </div>
       </div>
-    </>
+    </div>
+  )
+
+  const buttonResetFilter = (
+    <button
+      onClick={() => {
+        setRequestStatus(RequestStatus.SUCCESS)
+        setQuery(undefined)
+      }}
+      type="button"
+      className="btn btn-outline-danger mx-3">
+      <i className='bi-x-circle me-1'/>
+      Apagar filtros
+    </button>
+  )
+
+  const content = (
+    <div className='container-fluid'
+         data-backdrop="static">
+      <div className='row mt-lg-5 mb-3 justify-content-md-end'>
+        <div className='col-md-auto mx-5'>
+          {query ? buttonResetFilter : ''}
+          <button
+            type="button"
+            className="btn btn-outline-primary mx-3"
+            data-bs-toggle="modal"
+            data-bs-target="#filter-developer-modal">
+            <i className='bi-funnel me-1'/>
+            Filtrar
+          </button>
+          <button
+            type="button"
+            className="btn btn-primary"
+            data-bs-toggle="modal"
+            data-bs-target="#add-developer-modal">
+            <i className='bi-person-plus-fill me-2'/>
+            Cadastrar
+          </button>
+        </div>
+      </div>
+      <div className='row'>
+        <div className="col">
+          {/*table*/}
+          <Developerstable
+            onRequestStatus={setRequestStatus}
+            developersList={developersList}
+            modalUpdateId={'modal-update-developer'}
+            modalDeleteId={'modal-delete-developer'}
+          />
+        </div>
+      </div>
+      {/*modal add developer*/}
+      <Modaladd modalId={'add-developer-modal'} onRequestStatus={setRequestStatus}/>
+      {/*modal filter in developer list*/}
+      <Modalfilter
+        modalId={'filter-developer-modal'}
+        onRequestStatus={setRequestStatus}
+        setQuery={setQuery}
+        setTotalPage={setTotalPage}
+        setDeveloperList={setDevelopersList}/>
+      <div className='row justify-content-md-center mt-3'>
+        <div className='col-md-auto'>
+          {totalPage < 30 ? '' : handlePaginator()}
+        </div>
+      </div>
+    </div>
+  )
+
+  return (
+    developersList ? content : <div>{spinner}</div>
   )
 }

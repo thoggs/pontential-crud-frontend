@@ -10,3 +10,14 @@ export enum Genre {
   F = 'F',
   O = 'O'
 }
+
+export enum RequestStatus {
+  SUCCESS,
+  ERROR,
+  INITIAL_VALUE
+}
+
+export enum IsSignedStatus {
+  TRUE,
+  FALSE,
+}
