@@ -1,0 +1,33 @@
+.my-custom-scrollbar {
+  position: relative;
+  height: 60vh;
+  overflow: auto;
+  overflow-x: hidden;
+}
+.table-wrapper-scroll-y {
+  display: block;
+}
+
+table,
+thead,
+tr,
+tbody,
+th,
+td {
+  text-align: center;
+}
+
+.table td {
+  text-align: center;
+}
+
+.table-tools {
+  border-radius: 8px;
+}
+
+td {
+  i {
+    font-size: 1.2rem;
+    cursor: pointer;
+  }
+}

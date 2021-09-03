@@ -3,23 +3,24 @@ import logoImg from '../assets/images/logo.svg';
 import googleIconImg from '../assets/images/google-icon.svg';
 import { useHistory } from 'react-router-dom';
 import { useAuth } from '../hooks/auth/useAuth';
-import '../styles/signin.scss';
+import { IsSignedStatus } from "../@type/enums/enums";
 
 
 export function Signin() {
   const history = useHistory();
-  const {user, signInWithGoogle} = useAuth();
+  const {signInWithGoogle, isSigned} = useAuth();
 
   async function handleLoginAuth() {
-    if (!user) {
+
+    if (isSigned === IsSignedStatus.FALSE) {
       try {
-        await signInWithGoogle();
+        await signInWithGoogle()
       } catch (e) {
-        history.push('/');
+        history.push('/')
         return
       }
     }
-    history.push('/home');
+    history.push('/home')
   }
 
   return (
