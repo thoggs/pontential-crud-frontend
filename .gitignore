@@ -4,8 +4,8 @@
 /node_modules
 /.pnp
 /.idea
-.yarn
 .vscode
+
 # yarn v2
 .yarn/cache
 .yarn/unplugged
