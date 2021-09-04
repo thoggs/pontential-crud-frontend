@@ -2,15 +2,14 @@ FROM nginx:alpine
 
 WORKDIR /var/www/react_docker
 
-RUN apk add --update nodejs npm git
+COPY .docker/nginx/default.conf /etc/nginx/conf.d
+COPY . .
+
+RUN apk add --no-cache nodejs npm vim
 RUN npm install --global yarn
+RUN yarn install
+RUN yarn build
 
-COPY nginx/default.conf /etc/nginx/conf.d
-#COPY package.json /var/www/react_docker
-#COPY yarn.lock /var/www/react_docker
-#COPY . .
-#
-#RUN yarn install --silent && yarn build
+COPY . .
 
 
-##RUN sh developer.sh
