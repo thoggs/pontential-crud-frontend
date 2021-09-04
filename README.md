@@ -1,11 +1,11 @@
 
 ## Requisitos
 
-- [x] Ter o [Docker](https://www.docker.com/) instalado, instalado.
+- [x] Ter o [Docker](https://www.docker.com/) instalado.
 - [x] Conexão com a internet.
 - [x] Ter o GIT instalado
 
-## Clonando e subindo o Docker container na porta 8081
+## Clonando o projeto e subindo um container Nginx na porta 8081
 
 1) #### Rode o comando:
 ```sh
