@@ -1,25 +1,24 @@
 version: '3.8'
 
-#services:
-#    php-apache-react:
-#        container_name: php-apache-react
-#        build:
-#            context: php
-#        ports:
-#            - '8081:80'
-#        volumes:
-#            - ./:/var/www/react_docker
-#            - ./apache/default.conf:/etc/apache2/sites-enabled/000-default.conf
-
 services:
-    nginx-react:
-        container_name: nginx-react
-        build: .
-        volumes:
-            - ./build:/etc/nginx/templates
-            - ./:/var/www/react_docker
-        ports:
-            - "8081:80"
-        environment:
-            - NGINX_HOST=foobar.com
-            - NGINX_PORT=80
+  nginx:
+    container_name: nginx
+    build: .
+#    volumes:
+#      - ./build:/var/www/react_docker
+#      - ./:/var/www/react_docker
+    ports:
+      - "8081:80"
+    environment:
+      - NGINX_HOST=localhost
+      - NGINX_PORT=80
+
+#  deploy:
+#    container_name: deploy
+#    build: .docker/deploy
+#    volumes:
+#      - ./:/var/www/react_docker
+#    command:
+#      - cp .docker/nginx/default.conf /etc/nginx/conf.d
+#    depends_on:
+#      - deploy
