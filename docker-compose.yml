@@ -1,11 +1,8 @@
 version: '3.8'
 
 services:
-  nginx:
-    container_name: nginx
+  nginx-react:
+    container_name: nginx-react
     build: .
     ports:
       - "8081:80"
-    environment:
-      - NGINX_HOST=localhost
-      - NGINX_PORT=80
