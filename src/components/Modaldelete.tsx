@@ -2,6 +2,8 @@ import { DeveloperType } from "../@type/developers/developer.type";
 import { Dispatch, SetStateAction } from "react";
 import { RequestStatus } from "../@type/enums/enums";
 import { fetchDeleteDeveloper } from "../services/developers.services";
+import { useTextGlobals } from "../hooks/i18n/useTextGlobals";
+import { toast } from "react-hot-toast";
 
 type ModaldeleteProps = {
   modalId: string,
@@ -10,16 +12,21 @@ type ModaldeleteProps = {
 }
 
 export function Modaldelete(props: ModaldeleteProps) {
+  const {texts} = useTextGlobals(process.env.REACT_APP_TEXT_LOCALE)
   const {modalId, developer, onRequestStatus} = props;
 
   function deleteDeveloper() {
     if (developer && developer.id) {
       fetchDeleteDeveloper(developer.id)
-        .finally(() => {
+        .then(() => {
           onRequestStatus(RequestStatus.SUCCESS)
+          toast.success(texts.MODAL_DEL_TOAST_DEVELOPER_SUCCESS)
+        })
+        .finally(() => {
           const btnEl = document.getElementById('modal-delete-developer-button');
           if (btnEl) btnEl.click();
-        });
+        })
+        .catch(() => toast.error(texts.MODAL_DEL_TOAST_DEVELOPER_ERROR));
     }
   }
 
@@ -35,7 +42,7 @@ export function Modaldelete(props: ModaldeleteProps) {
           <div className="modal-header">
             <h5 className="modal-title"
                 id="modal-delete-developer-title">
-              Confirma a exclusão?
+              {texts.MODAL_DEL_BTN_CONFIRM}
             </h5>
             <button
               type="button"
@@ -44,12 +51,11 @@ export function Modaldelete(props: ModaldeleteProps) {
               aria-label="Close"/>
           </div>
           <div className="modal-body">
-
             <div className="alert alert-warning" role="alert">
-              O desenvolvedor <i className='fw-bold'>{developer ? developer.nome : ''}</i> será excluido
-              permanentemente!
+              <span className='mx-1'>{texts.MODAL_DEL_BTN_CONTENT_1}</span>
+              <i className='fw-bold'>{developer ? developer.nome : ''}</i>
+              <span className='mx-1'>{texts.MODAL_DEL_BTN_CONTENT_2}</span>
             </div>
-
           </div>
           <div className="modal-footer">
             <button
@@ -57,13 +63,13 @@ export function Modaldelete(props: ModaldeleteProps) {
               type="button"
               className="btn btn-secondary"
               data-bs-dismiss="modal">
-              Fechar
+              {texts.MODAL_DEL_BTN_CLOSE_MODAL}
             </button>
             <button
               onClick={deleteDeveloper}
               type="button"
               className="btn btn-danger">
-              Excluir
+              {texts.MODAL_DEL_BTN_SUBMIT}
             </button>
           </div>
         </div>
