@@ -1,6 +1,6 @@
 {
   "name": "pontential-crud-frontend",
-  "version": "1.0.1",
+  "version": "1.0.10",
   "private": true,
   "dependencies": {
     "@babel/runtime": "^7.15.4",
