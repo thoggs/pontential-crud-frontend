@@ -6,7 +6,7 @@ import { DeveloperType, ResponseBody } from "../@type/developers/developer.type"
 import { IsSignedStatus, RequestStatus } from "../@type/enums/enums";
 import { Pagination } from '@material-ui/lab';
 import { fetchAllDevelopers, fetchFilterDevelopers, fetchPagesWithPageNumber } from "../services/developers.services";
-import { createStyles, makeStyles } from "@material-ui/core";
+import { CircularProgress, createStyles, makeStyles } from "@material-ui/core";
 import { useHistory } from "react-router-dom";
 import { auth } from "../services/firebase";
 import { useAuth } from "../hooks/auth/useAuth";
@@ -54,9 +54,11 @@ export function Home() {
 
         fetchAllDevelopers()
           .then((result) => {
-            setDevelopersList(result.body.data)
-            setResponseBody(result.body)
-            setTotalPage(result.body.total)
+            if (result.body) {
+              setDevelopersList(result.body.data)
+              setResponseBody(result.body)
+              setTotalPage(result.body.total)
+            }
           })
           .finally(() => setRequestStatus(RequestStatus.INITIAL_VALUE));
         break
@@ -88,15 +90,12 @@ export function Home() {
         )
       }
     }
-
   }
 
   const spinner = (
     <div className='custom-container-spinner'>
       <div className="d-flex justify-content-center text-primary">
-        <div className="spinner-border spinner-custom-style" role="status">
-          <span className="visually-hidden">Loading...</span>
-        </div>
+        <CircularProgress/>
       </div>
     </div>
   )
@@ -167,6 +166,6 @@ export function Home() {
   )
 
   return (
-    developersList ? content : <div>{spinner}</div>
+    developersList.length > 0 ? content : spinner
   )
 }
