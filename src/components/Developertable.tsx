@@ -4,6 +4,7 @@ import { Dispatch, ReactNode, SetStateAction, useState } from "react";
 import { Modalupdate } from "./Modalupdate";
 import { RequestStatus } from "../@type/enums/enums";
 import { Modaldelete } from "./Modaldelete";
+import { useTextGlobals } from "../hooks/i18n/useTextGlobals";
 
 
 type DevelopertableProps = {
@@ -14,6 +15,7 @@ type DevelopertableProps = {
 }
 
 export function Developerstable(props: DevelopertableProps) {
+  const {texts} = useTextGlobals(process.env.REACT_APP_TEXT_LOCALE)
   const {developersList, modalUpdateId, modalDeleteId, onRequestStatus} = props;
   const [developer, setDeveloper] = useState<DeveloperType>();
 
@@ -25,7 +27,7 @@ export function Developerstable(props: DevelopertableProps) {
           <td>{dev.idade}</td>
           <td>{dev.sexo === 'M' ? 'Masculino' : dev.sexo === 'F' ? 'Feminino' : 'Outro'}</td>
           <td>{dev.hobby}</td>
-          <td>{moment(dev.datanascimento).format('L')}</td>
+          <td>{moment(dev.datanascimento).locale('pt-BR').format('DD/MM/YYYY')}</td>
           <td><i
             onClick={() => setDeveloper(dev)}
             data-bs-target={`#${modalUpdateId}`}
@@ -49,13 +51,13 @@ export function Developerstable(props: DevelopertableProps) {
         <table className='table table-striped table-bordered rounded table-hover table-responsive table'>
           <thead>
           <tr>
-            <th>Nome</th>
-            <th>Idade</th>
-            <th>Sexo</th>
-            <th>Hobby</th>
-            <th>Data de Nascimento</th>
-            <th>Editar</th>
-            <th>Excluir</th>
+            <th>{texts.TABLE_DEV_UPDATE_NAME}</th>
+            <th>{texts.TABLE_DEV_AGE}</th>
+            <th>{texts.TABLE_DEV_GENRE}</th>
+            <th>{texts.TABLE_DEV_HOBBY}</th>
+            <th>{texts.TABLE_DEV_BIRTH_DATE}</th>
+            <th>{texts.TABLE_DEV_BTN_EDIT}</th>
+            <th>{texts.TABLE_DEV_BTN_DEL}</th>
           </tr>
           </thead>
           <tbody>

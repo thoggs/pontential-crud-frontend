@@ -10,6 +10,8 @@ import { CircularProgress, createStyles, makeStyles } from "@material-ui/core";
 import { useHistory } from "react-router-dom";
 import { auth } from "../services/firebase";
 import { useAuth } from "../hooks/auth/useAuth";
+import { Toaster } from "react-hot-toast";
+import { useTextGlobals } from "../hooks/i18n/useTextGlobals";
 
 
 const useStyles = makeStyles((theme) =>
@@ -23,6 +25,7 @@ const useStyles = makeStyles((theme) =>
 )
 
 export function Home() {
+  const {texts} = useTextGlobals(process.env.REACT_APP_TEXT_LOCALE)
   const history = useHistory();
   const authLogin = useAuth();
   const [requestStatus, setRequestStatus] = useState<RequestStatus>(RequestStatus.SUCCESS);
@@ -49,7 +52,9 @@ export function Home() {
               setResponseBody(result.body)
               setTotalPage(result.body.total)
             })
-            .finally(() => setRequestStatus(RequestStatus.INITIAL_VALUE))
+            .finally(() => {
+              setRequestStatus(RequestStatus.INITIAL_VALUE)
+            })
         }
 
         fetchAllDevelopers()
@@ -63,7 +68,6 @@ export function Home() {
           .finally(() => setRequestStatus(RequestStatus.INITIAL_VALUE));
         break
     }
-
     return () => {
       unsubscribe();
     }
@@ -76,7 +80,6 @@ export function Home() {
   };
 
   function handlePaginator() {
-    console.log(totalPage)
     if (developersList && responseBody) {
       const {last_page} = responseBody;
 
@@ -109,7 +112,7 @@ export function Home() {
       type="button"
       className="btn btn-outline-danger mx-3">
       <i className='bi-x-circle me-1'/>
-      Apagar filtros
+      {texts.HOME_BTN_CLEAR_FILTER}
     </button>
   )
 
@@ -125,7 +128,7 @@ export function Home() {
             data-bs-toggle="modal"
             data-bs-target="#filter-developer-modal">
             <i className='bi-funnel me-1'/>
-            Filtrar
+            {texts.HOME_BTN_FILTER}
           </button>
           <button
             type="button"
@@ -133,7 +136,7 @@ export function Home() {
             data-bs-toggle="modal"
             data-bs-target="#add-developer-modal">
             <i className='bi-person-plus-fill me-2'/>
-            Cadastrar
+            {texts.HOME_BTN_ADD}
           </button>
         </div>
       </div>
@@ -166,6 +169,9 @@ export function Home() {
   )
 
   return (
-    developersList.length > 0 ? content : spinner
+    <>
+      <Toaster/>
+      {developersList.length > 0 ? content : spinner}
+    </>
   )
 }

@@ -2,12 +2,14 @@ import React, { ReactNode } from "react";
 import { useHistory, useLocation } from "react-router-dom";
 import { auth } from "../services/firebase";
 import { useAuth } from "../hooks/auth/useAuth";
+import { useTextGlobals } from "../hooks/i18n/useTextGlobals";
 
 type DashboardProps = {
   children?: ReactNode;
 }
 
 export function Dashboard(props: DashboardProps) {
+  const {texts} = useTextGlobals(process.env.REACT_APP_TEXT_LOCALE)
   const {user} = useAuth();
   const history = useHistory();
   const {pathname} = useLocation();
@@ -33,7 +35,7 @@ export function Dashboard(props: DashboardProps) {
       <header className="navbar navbar-dark sticky-top bg-dark flex-md-nowrap p-0">
         <span
           className="navbar-brand col-md-3 col-lg-2 me-0 px-5">
-          Gazin
+          {texts.DASHBOARD_BRAND}
         </span>
         <button
           className="navbar-toggler position-absolute d-md-none collapsed"
@@ -54,7 +56,7 @@ export function Dashboard(props: DashboardProps) {
             <span
               onClick={signOutGoogleAccount}
               className="nav-link my-auto">
-              Sair da plataforma
+              {texts.DASHBOARD_LOGOOUT}
             </span>
           </div>
         </div>
@@ -71,7 +73,7 @@ export function Dashboard(props: DashboardProps) {
                     className="nav-link active text-light h6 mx-5"
                     aria-current="page">
                     <i className="bi-house-door-fill me-2"/>
-                    Dashboard
+                    {texts.DASHBOARD_SIDENAV_DASHBOARD}
                   </span>
                 </li>
               </ul>
@@ -81,7 +83,7 @@ export function Dashboard(props: DashboardProps) {
             <div
               className="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center
               pt-3 pb-2 mb-3 border-bottom">
-              <h1 className="h2">Dashboard</h1>
+              <h1 className="h2">{texts.DASHBOARD_HEADER_TITLE}</h1>
               <div className="btn-toolbar mb-2 mb-md-0">
                 {/*Toolbar*/}
               </div>

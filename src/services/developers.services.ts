@@ -2,7 +2,7 @@ import { DevelopersResponseDTO, DeveloperType } from "../@type/developers/develo
 import { RequestType } from "../@type/enums/enums";
 
 
-const apiUrl = 'http://localhost:8080/api/developers';
+const apiUrl = process.env.REACT_APP_API_DEVELOPERS_URL;
 
 export function fetchCreateDeveloper(developer: DeveloperType) {
   const query = new URLSearchParams();

@@ -1,6 +1,8 @@
 import { Genre, RequestStatus } from "../@type/enums/enums";
 import { Dispatch, FormEvent, SetStateAction, useState } from "react";
 import { fetchCreateDeveloper } from "../services/developers.services";
+import { toast } from "react-hot-toast";
+import { useTextGlobals } from "../hooks/i18n/useTextGlobals";
 
 
 type ModaladdProps = {
@@ -9,11 +11,12 @@ type ModaladdProps = {
 }
 
 export function Modaladd(props: ModaladdProps) {
-  const [nome, setNome] = useState<string>('');
-  const [idade, setIdade] = useState<string>('');
-  const [sexo, setSexo] = useState<string>('');
-  const [hobby, setHobby] = useState<string>('');
-  const [datanascimento, setDatanascimento] = useState<string>('');
+  const [nome, setNome] = useState<string>('')
+  const [idade, setIdade] = useState<string>('')
+  const [sexo, setSexo] = useState<string>('')
+  const [hobby, setHobby] = useState<string>('')
+  const [datanascimento, setDatanascimento] = useState<string>('')
+  const {texts} = useTextGlobals(process.env.REACT_APP_TEXT_LOCALE)
   const {modalId, onRequestStatus} = props;
 
   function handleAddDeveloper(event: FormEvent) {
@@ -28,7 +31,11 @@ export function Modaladd(props: ModaladdProps) {
       sexo: sexo,
       hobby: hobby,
       datanascimento: datanascimento
-    }).then(result => console.log(result))
+    })
+      .then(() => {
+        onRequestStatus(RequestStatus.SUCCESS)
+        toast.success(texts.MODAL_ADD_TOAST_DEVELOPER_SUCCESS)
+      })
       .finally(() => {
         setNome('');
         setIdade('');
@@ -36,12 +43,13 @@ export function Modaladd(props: ModaladdProps) {
         setHobby('');
         setDatanascimento('');
 
-        onRequestStatus(RequestStatus.SUCCESS)
         const btnEl = document.getElementById('add-modal-close-button');
         if (btnEl) btnEl.click();
-
       })
-      .catch(() => onRequestStatus(RequestStatus.ERROR))
+      .catch(() => {
+        toast.error(texts.MODAL_ADD_TOAST_DEVELOPER_ERROR)
+        onRequestStatus(RequestStatus.ERROR)
+      })
   }
 
   return (
@@ -55,7 +63,7 @@ export function Modaladd(props: ModaladdProps) {
           <form onSubmit={handleAddDeveloper}>
             <div className="modal-header">
               <h5 className="modal-title">
-                Adicionar desenvolvedor
+                {texts.MODAL_ADD_BTN_ADD_DEVELOPER}
               </h5>
               <button
                 type="button"
@@ -77,7 +85,7 @@ export function Modaladd(props: ModaladdProps) {
                         placeholder="nome exemplo"
                         required
                       />
-                      <label htmlFor="floatingInput">Nome</label>
+                      <label htmlFor="floatingInput">{texts.MODAL_ADD_FORM_NAME}</label>
                     </div>
                   </div>
                   <div className='col'>
@@ -91,7 +99,7 @@ export function Modaladd(props: ModaladdProps) {
                         placeholder="idade = 25"
                         required
                       />
-                      <label htmlFor="floatingInput">Idade</label>
+                      <label htmlFor="floatingInput">{texts.MODAL_ADD_FORM_AGE}</label>
                     </div>
                   </div>
                 </div>
@@ -107,7 +115,7 @@ export function Modaladd(props: ModaladdProps) {
                         placeholder="dia/mês/ano"
                         required
                       />
-                      <label htmlFor="floatingInput">Data de nascimento</label>
+                      <label htmlFor="floatingInput">{texts.MODAL_ADD_FORM_BIRTH_DATE}</label>
                     </div>
                   </div>
                   <div className='col'>
@@ -119,12 +127,12 @@ export function Modaladd(props: ModaladdProps) {
                         id="seletemodaladd"
                         aria-label="Floating label select example"
                         required>
-                        <option value={''}>Selecione seu gênero</option>
-                        <option value={Genre.M}>Masculino</option>
-                        <option value={Genre.F}>Feminino</option>
-                        <option value={Genre.O}>Outro</option>
+                        <option value={''}>{texts.MODAL_ADD_FORM_GENRE_SELECT_PLACEHOLDER}</option>
+                        <option value={Genre.M}>{texts.MODAL_ADD_FORM_GENRE_SELECT_OPTION_M}</option>
+                        <option value={Genre.F}>{texts.MODAL_ADD_FORM_GENRE_SELECT_OPTION_F}</option>
+                        <option value={Genre.O}>{texts.MODAL_ADD_FORM_GENRE_SELECT_OPTION_O}</option>
                       </select>
-                      <label htmlFor="seletemodaladd">Clique para selecionar</label>
+                      <label htmlFor="seletemodaladd">{texts.MODAL_ADD_FORM_GENRE_SELECT_LABEL}</label>
                     </div>
                   </div>
                 </div>
@@ -139,7 +147,7 @@ export function Modaladd(props: ModaladdProps) {
                         id="modal-add-hobby"
                         required
                       />
-                      <label htmlFor="floatingTextarea">Hobby</label>
+                      <label htmlFor="floatingTextarea">{texts.MODAL_ADD_FORM_HOBBY}</label>
                     </div>
                   </div>
                 </div>
@@ -151,14 +159,14 @@ export function Modaladd(props: ModaladdProps) {
                 type="button"
                 className="btn btn-secondary"
                 data-bs-dismiss="modal">
-                Fechar
+                {texts.MODAL_ADD_BTN_CLOSE_MODAL}
               </button>
               <button
                 id='add-modal-submit-button'
                 type="submit"
                 className="btn btn-success">
                 <i className="bi-box-arrow-in-right me-2"/>
-                Enviar formulário
+                {texts.MODAL_ADD_BTN_SUBMIT}
               </button>
             </div>
           </form>
