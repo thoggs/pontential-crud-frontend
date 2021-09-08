@@ -44,9 +44,7 @@ export function Modalfilter(props: ModaladdProps) {
         clearFormFilter()
       } else {
         setQuery(undefined)
-        toast(texts.MODAL_FILTER_TOAST_DEVELOPER_WARNING, {
-          icon: '⚠️'
-        })
+        toast.error(texts.MODAL_FILTER_TOAST_DEVELOPER_WARNING)
       }
     })
       .finally(() => {
