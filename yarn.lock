@@ -11713,7 +11713,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"selenium-webdriver@npm:4.0.0-rc-1, selenium-webdriver@npm:^4.0.0-beta.2":
+"selenium-webdriver@npm:4.0.0-rc-1":
   version: 4.0.0-rc-1
   resolution: "selenium-webdriver@npm:4.0.0-rc-1"
   dependencies:
@@ -11722,6 +11722,17 @@ __metadata:
     tmp: ^0.2.1
     ws: ">=7.4.6"
   checksum: 10e74040a3fb1b55b295a21b74061cca85742cdc64922bd932339c66684a9f0cc9ec28abce5ea0548858332126c10e2e5cbed43080feab782ad45db2388c8fd8
+  languageName: node
+  linkType: hard
+
+"selenium-webdriver@npm:^4.0.0-beta.2":
+  version: 4.1.1
+  resolution: "selenium-webdriver@npm:4.1.1"
+  dependencies:
+    jszip: ^3.6.0
+    tmp: ^0.2.1
+    ws: ">=7.4.6"
+  checksum: dfe8e7e43c55f1c3fb1284f5420c7498c2694a3d0a7d2ef87064605de7ce7c7f240a686948f1187bac45c45d29b44b5250298b15a7d050f6011d18af64a6b32e
   languageName: node
   linkType: hard
 
@@ -13538,22 +13549,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"ws@npm:>=7.4.6, ws@npm:^7.4.6":
-  version: 7.5.7
-  resolution: "ws@npm:7.5.7"
-  peerDependencies:
-    bufferutil: ^4.0.1
-    utf-8-validate: ^5.0.2
-  peerDependenciesMeta:
-    bufferutil:
-      optional: true
-    utf-8-validate:
-      optional: true
-  checksum: 5c1f669a166fb57560b4e07f201375137fa31d9186afde78b1508926345ce546332f109081574ddc4e38cc474c5406b5fc71c18d71eb75f6e2d2245576976cba
-  languageName: node
-  linkType: hard
-
-"ws@npm:^8.4.2":
+"ws@npm:>=7.4.6, ws@npm:^8.4.2":
   version: 8.5.0
   resolution: "ws@npm:8.5.0"
   peerDependencies:
@@ -13565,6 +13561,21 @@ __metadata:
     utf-8-validate:
       optional: true
   checksum: 76f2f90e40344bf18fd544194e7067812fb1372b2a37865678d8f12afe4b478ff2ebc0c7c0aff82cd5e6b66fc43d889eec0f1865c2365d8f7a66d92da7744a77
+  languageName: node
+  linkType: hard
+
+"ws@npm:^7.4.6":
+  version: 7.5.7
+  resolution: "ws@npm:7.5.7"
+  peerDependencies:
+    bufferutil: ^4.0.1
+    utf-8-validate: ^5.0.2
+  peerDependenciesMeta:
+    bufferutil:
+      optional: true
+    utf-8-validate:
+      optional: true
+  checksum: 5c1f669a166fb57560b4e07f201375137fa31d9186afde78b1508926345ce546332f109081574ddc4e38cc474c5406b5fc71c18d71eb75f6e2d2245576976cba
   languageName: node
   linkType: hard
 

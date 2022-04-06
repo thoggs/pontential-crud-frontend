@@ -30,7 +30,6 @@ export function AuthContextProvider(props: AuthContextProviderProps) {
       if (user) {
         setIsSigned(IsSignedStatus.TRUE)
       } else {
-        console.log('TESTE')
         setIsSigned(IsSignedStatus.FALSE)
       }
 
