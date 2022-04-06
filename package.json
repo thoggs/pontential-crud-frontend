@@ -14,9 +14,9 @@
     "@types/react-dom": "^17.0.0",
     "bootstrap": "^5.1.0",
     "bootstrap-icons": "^1.5.0",
+    "browserslist": "latest",
     "firebase": "^9.0.1",
     "moment": "^2.29.1",
-    "node-sass": "5.0.0",
     "popper.js": "^1.16.1",
     "react": "^17.0.2",
     "react-dom": "^17.0.2",
@@ -57,7 +57,8 @@
     "@types/react-js-pagination": "^3.0.4",
     "@types/react-paginate": "^7.1.1",
     "@types/react-router-dom": "^5.1.8",
-    "@types/react-router-transition": "^2.1.1"
+    "@types/react-router-transition": "^2.1.1",
+    "sass": "^1.49.11"
   },
   "packageManager": "yarn@3.0.2"
 }
