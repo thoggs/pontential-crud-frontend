@@ -1,3 +1,5 @@
+<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://github.com/thoggs/pontential-crud-frontend/blob/master/public/logo192.png?raw=true" width="150" alt=""></a></p>
+
 
 ### Requisitos
 
