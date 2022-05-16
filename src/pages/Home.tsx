@@ -4,25 +4,24 @@ import { Modalfilter } from "../components/Modalfilter";
 import React, { useEffect, useState } from "react";
 import { DeveloperType, ResponseBody } from "../@type/developers/developer.type";
 import { IsSignedStatus, RequestStatus } from "../@type/enums/enums";
-import { Pagination } from '@material-ui/lab';
 import { fetchAllDevelopers, fetchFilterDevelopers, fetchPagesWithPageNumber } from "../services/developers.services";
-import { CircularProgress, createStyles, makeStyles } from "@material-ui/core";
 import { auth } from "../services/firebase";
 import { useAuth } from "../hooks/auth/useAuth";
 import { Toaster } from "react-hot-toast";
 import { useTextGlobals } from "../hooks/i18n/useTextGlobals";
 import {useNavigate} from "react-router-dom";
+import {CircularProgress, Pagination} from "@mui/material";
 
 
-const useStyles = makeStyles((theme) =>
-  createStyles({
-    root: {
-      '& > * + *': {
-        marginTop: theme.spacing(2),
-      }
-    }
-  })
-)
+// const useStyles = makeStyles((theme: Theme) =>
+//   createStyles({
+//     root: {
+//       '& > * + *': {
+//         marginTop: theme.spacing(2),
+//       }
+//     }
+//   })
+// )
 
 export function Home() {
   const {texts} = useTextGlobals(process.env.REACT_APP_TEXT_LOCALE)
@@ -33,7 +32,6 @@ export function Home() {
   const [responseBody, setResponseBody] = useState<ResponseBody>();
   const [query, setQuery] = useState<DeveloperType>();
   const [totalPage, setTotalPage] = useState<number>(0)
-  const classes = useStyles();
 
   useEffect(() => {
     const unsubscribe = auth.onAuthStateChanged(user => {
@@ -87,7 +85,7 @@ export function Home() {
         return
       } else {
         return (
-          <div className={classes.root}>
+          <div>
             <Pagination count={last_page} onChange={handleChange}/>
           </div>
         )
