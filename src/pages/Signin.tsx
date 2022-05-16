@@ -1,13 +1,13 @@
 import illustrationImg from '../assets/images/illustration.svg';
 import logoImg from '../assets/images/logo.svg';
 import googleIconImg from '../assets/images/google-icon.svg';
-import { useHistory } from 'react-router-dom';
-import { useAuth } from '../hooks/auth/useAuth';
-import { IsSignedStatus } from "../@type/enums/enums";
+import {useAuth} from '../hooks/auth/useAuth';
+import {IsSignedStatus} from "../@type/enums/enums";
+import {useNavigate} from "react-router-dom";
 
 
 export function Signin() {
-  const history = useHistory();
+  const navigate = useNavigate();
   const {signInWithGoogle, isSigned} = useAuth();
 
   async function handleLoginAuth() {
@@ -16,11 +16,11 @@ export function Signin() {
       try {
         await signInWithGoogle()
       } catch (e) {
-        history.push('/')
+        navigate('/')
         return
       }
     }
-    history.push('/home')
+    navigate('/home')
   }
 
   return (

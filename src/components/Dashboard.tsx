@@ -1,8 +1,8 @@
-import React, { ReactNode } from "react";
-import { useHistory, useLocation } from "react-router-dom";
-import { auth } from "../services/firebase";
-import { useAuth } from "../hooks/auth/useAuth";
-import { useTextGlobals } from "../hooks/i18n/useTextGlobals";
+import React, {ReactNode} from "react";
+import {useLocation, useNavigate} from "react-router-dom";
+import {auth} from "../services/firebase";
+import {useAuth} from "../hooks/auth/useAuth";
+import {useTextGlobals} from "../hooks/i18n/useTextGlobals";
 
 type DashboardProps = {
   children?: ReactNode;
@@ -11,12 +11,12 @@ type DashboardProps = {
 export function Dashboard(props: DashboardProps) {
   const {texts} = useTextGlobals(process.env.REACT_APP_TEXT_LOCALE)
   const {user} = useAuth();
-  const history = useHistory();
+  const navigate = useNavigate();
   const {pathname} = useLocation();
   const {children} = props;
 
   function setPathLocationHome() {
-    history.push('/home')
+    navigate('/home')
   }
 
   function shadowNavItemIsActive(compare: string) {
@@ -26,7 +26,7 @@ export function Dashboard(props: DashboardProps) {
   function signOutGoogleAccount() {
     auth.signOut()
       .then(res => console.log('S'))
-      .finally(() => history.push(''))
+      .finally(() => navigate(''))
       .catch((e) => console.log('S'))
   }
 

@@ -7,11 +7,11 @@ import { IsSignedStatus, RequestStatus } from "../@type/enums/enums";
 import { Pagination } from '@material-ui/lab';
 import { fetchAllDevelopers, fetchFilterDevelopers, fetchPagesWithPageNumber } from "../services/developers.services";
 import { CircularProgress, createStyles, makeStyles } from "@material-ui/core";
-import { useHistory } from "react-router-dom";
 import { auth } from "../services/firebase";
 import { useAuth } from "../hooks/auth/useAuth";
 import { Toaster } from "react-hot-toast";
 import { useTextGlobals } from "../hooks/i18n/useTextGlobals";
+import {useNavigate} from "react-router-dom";
 
 
 const useStyles = makeStyles((theme) =>
@@ -26,7 +26,7 @@ const useStyles = makeStyles((theme) =>
 
 export function Home() {
   const {texts} = useTextGlobals(process.env.REACT_APP_TEXT_LOCALE)
-  const history = useHistory();
+  const navigate = useNavigate();
   const authLogin = useAuth();
   const [requestStatus, setRequestStatus] = useState<RequestStatus>(RequestStatus.SUCCESS);
   const [developersList, setDevelopersList] = useState<Array<DeveloperType>>([]);
@@ -39,7 +39,7 @@ export function Home() {
     const unsubscribe = auth.onAuthStateChanged(user => {
       if (!user) {
         authLogin.isSigned = IsSignedStatus.FALSE
-        history.push('/')
+        navigate('/')
       }
     })
 
@@ -72,7 +72,7 @@ export function Home() {
       unsubscribe();
     }
 
-  }, [authLogin, history, query, requestStatus, totalPage])
+  }, [authLogin, query, requestStatus, totalPage, navigate])
 
   const handleChange = (event: React.ChangeEvent<unknown>, page: number) => {
     fetchPagesWithPageNumber(page)
