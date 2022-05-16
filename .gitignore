@@ -5,6 +5,7 @@
 /.pnp
 /.idea
 .vscode
+.yarn
 
 # yarn v2
 .yarn/cache

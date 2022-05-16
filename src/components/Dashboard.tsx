@@ -25,9 +25,9 @@ export function Dashboard(props: DashboardProps) {
 
   function signOutGoogleAccount() {
     auth.signOut()
-      .then(res => console.log('S'))
+      .then(() => console.log('S'))
       .finally(() => navigate(''))
-      .catch((e) => console.log('S'))
+      .catch(() => console.log('S'))
   }
 
   return (

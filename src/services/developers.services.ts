@@ -67,9 +67,9 @@ export function fetchPagesWithPageNumber(page: number) {
     .catch(err => err)
 }
 
-export function fetchPagesWithPageUrl(pageUrl: string) {
-  return fetch(`${pageUrl}`, {method: RequestType.GET})
-    .then((res) => res.json())
-    .then((result: DevelopersResponseDTO) => result)
-    .catch(err => err)
-}
+// export function fetchPagesWithPageUrl(pageUrl: string) {
+//   return fetch(`${pageUrl}`, {method: RequestType.GET})
+//     .then((res) => res.json())
+//     .then((result: DevelopersResponseDTO) => result)
+//     .catch(err => err)
+// }
