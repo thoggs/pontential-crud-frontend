@@ -1,6 +1,6 @@
 import { useCallback, useState } from "react";
-import { Developer } from "@/app/shered/types/response/developers";
 import moment from 'moment';
+import { Developer } from "@/app/shered/types/response/developers";
 
 export default function useDeveloperValidation() {
   const [ validationErrors, setValidationErrors ] = useState<Record<string, string | undefined>>({});
@@ -15,11 +15,17 @@ export default function useDeveloperValidation() {
     return moment(date, 'YYYY-MM-DD', true).isValid();
   }, []);
 
+  const validateNumber = useCallback((value: string) => {
+    const numberValue = Number(value);
+    return !isNaN(numberValue) && numberValue > 0;
+  }, []);
+
   const validateDeveloper = useCallback((dev: Developer) => {
     const errors = {
       firstName: !validateRequired(dev.firstName) ? 'Nome é obrigatório' : '',
       lastName: !validateRequired(dev.lastName) ? 'Sobrenome é obrigatório' : '',
-      age: !validateRequired(String(dev.age)) ? 'Idade é obrigatória' : '',
+      age: !validateRequired(String(dev.age)) ? 'Idade é obrigatória' : !validateNumber(String(dev.age)) ?
+        'Idade deve ser um número maior que zero' : '',
       birthDate: !validateDate(dev.birthDate) ? 'Formato de data inválido' : '',
       hobby: !validateRequired(dev.hobby) ? 'Hobby é obrigatório' : '',
       email: !validateEmail(dev.email) ? 'Formato de email incorreto' : '',
@@ -27,7 +33,7 @@ export default function useDeveloperValidation() {
 
     setValidationErrors(errors);
     return errors;
-  }, [ validateRequired, validateEmail, validateDate ]);
+  }, [ validateRequired, validateEmail, validateDate, validateNumber ]);
 
   return { validationErrors, validateDeveloper, setValidationErrors };
 }
