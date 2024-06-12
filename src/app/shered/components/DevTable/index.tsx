@@ -166,6 +166,7 @@ export default function DevTable() {
         mantineEditTextInputProps: {
           type: 'text',
           required: true,
+          maxLength: 50,
           error: validationErrors?.firstName,
           onFocus: () =>
             setValidationErrors({
@@ -180,6 +181,7 @@ export default function DevTable() {
         mantineEditTextInputProps: {
           type: 'text',
           required: true,
+          maxLength: 50,
           error: validationErrors?.lastName,
           onFocus: () =>
             setValidationErrors({
@@ -194,6 +196,7 @@ export default function DevTable() {
         mantineEditTextInputProps: {
           type: 'email',
           required: true,
+          maxLength: 60,
           error: validationErrors?.email,
           onFocus: () =>
             setValidationErrors({
@@ -206,8 +209,9 @@ export default function DevTable() {
         accessorKey: 'age',
         header: 'Idade',
         mantineEditTextInputProps: {
-          type: 'number',
+          type: 'text',
           required: true,
+          maxLength: 3,
           error: validationErrors?.age,
           onFocus: () =>
             setValidationErrors({
@@ -232,6 +236,7 @@ export default function DevTable() {
         mantineEditTextInputProps: (cell) => ({
           type: 'date',
           required: true,
+          maxLength: 10,
           value: cell.row.original.birthDate ? new Date(cell.row.original.birthDate).toISOString().split('T')[0] : '',
           error: validationErrors?.birthDate,
           onChange: (e) => {
@@ -253,6 +258,7 @@ export default function DevTable() {
         editVariant: 'select',
         mantineEditSelectProps: {
           data: GENDERS,
+          maxLength: 30,
         },
         Cell: ({ cell }) => {
           const gender = cell.getValue<string>();
@@ -263,9 +269,11 @@ export default function DevTable() {
       {
         accessorKey: 'hobby',
         header: 'Hobby',
+        style: {overflow: "visible"},
         mantineEditTextInputProps: {
           type: 'text',
           required: true,
+          maxLength: 100,
           error: validationErrors?.hobby,
           onFocus: () =>
             setValidationErrors({
