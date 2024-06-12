@@ -75,7 +75,7 @@ export default function DevTable() {
           req,
           {
             loading: 'Criando desenvolvedor..',
-            success: 'Desenvolvedor criado com sucesso!',
+            success: 'Desenvolvedor cadastrado com sucesso!',
             error: (err) => `Error: ${err.toString()}`,
           },
         );
