@@ -10,7 +10,7 @@ const CustomToaster = () => {
       toastOptions={{
         duration: 5000,
         style: {
-          background: colorScheme === 'dark' ? '#2C2E33' : '#FFFFFF',
+          background: colorScheme === 'dark' ? '#3A3B3E' : '#FFFFFF',
           color: colorScheme === 'dark' ? '#FFFFFF' : '#1A1B1E',
         },
       }}
