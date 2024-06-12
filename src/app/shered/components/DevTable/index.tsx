@@ -227,17 +227,17 @@ export default function DevTable() {
         enableColumnFilterModes: false,
         header: 'Data de Nascimento',
         accessorFn: (row) => {
-          return moment(row.birthDate).toDate();
+          return moment(row.birthDate).format('YYYY-MM-DD');
         },
         Cell: ({ cell }) => {
-          const date = moment(cell.getValue<Date>());
+          const date = moment(cell.getValue<string>(), 'YYYY-MM-DD');
           return date.format('DD/MM/YYYY');
         },
         mantineEditTextInputProps: (cell) => ({
           type: 'date',
           required: true,
           maxLength: 10,
-          value: cell.row.original.birthDate ? new Date(cell.row.original.birthDate).toISOString().split('T')[0] : '',
+          value: cell.row.original.birthDate ? moment(cell.row.original.birthDate).format('YYYY-MM-DD') : '',
           error: validationErrors?.birthDate,
           onChange: (e) => {
             const input = e.target as HTMLInputElement;
@@ -269,7 +269,6 @@ export default function DevTable() {
       {
         accessorKey: 'hobby',
         header: 'Hobby',
-        style: {overflow: "visible"},
         mantineEditTextInputProps: {
           type: 'text',
           required: true,
