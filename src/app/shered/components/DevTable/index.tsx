@@ -21,6 +21,7 @@ import { GENDERS } from '@/app/shered/components/DevTable/constants';
 import { MRT_Localization_PT_BR } from 'mantine-react-table/locales/pt-BR/index.esm.mjs';
 import moment from "moment";
 import useDeveloperValidation from "@/app/hooks/useDeveloperValidation";
+import toast from "react-hot-toast";
 
 export default function DevTable() {
   const { list, create, update, destroy } = useRequest();
@@ -66,21 +67,31 @@ export default function DevTable() {
   }
 
   function useCreateDeveloper() {
+    const queryClient = useQueryClient();
+
     return useMutation({
       mutationFn: async (dev: Developer) => {
-        const response = await create<Developer>(URI_PATH.MAIN.DEVELOPERS, dev);
-        return response.data;
+        const req = create<Developer>(URI_PATH.MAIN.DEVELOPERS, dev).then(response => response.data);
+
+        await toast.promise(
+          req,
+          {
+            loading: 'Criando desenvolvedor..',
+            success: 'Desenvolvedor criado com sucesso!',
+            error: (err) => `Error: ${err.toString()}`,
+          },
+        );
+        return req;
       },
       onMutate: (newDevInfo: Developer) => {
         queryClient.setQueryData(
           [ 'developers' ],
-          (prevDevelopers: any) =>
-            [
-              ...prevDevelopers,
-              {
-                ...newDevInfo,
-              },
-            ] as Developer[],
+          (prevDevelopers: Developer[] | undefined) => [
+            ...(prevDevelopers || []),
+            {
+              ...newDevInfo,
+            },
+          ]
         );
       },
       onSettled: () => queryClient.invalidateQueries({ queryKey: [ 'developers' ] }),
@@ -88,18 +99,30 @@ export default function DevTable() {
   }
 
   function useUpdateDeveloper() {
+    const queryClient = useQueryClient();
+
     return useMutation({
       mutationFn: async (dev: Developer) => {
-        const response = await update<Developer>(URI_PATH.MAIN.DEVELOPERS, dev.id, dev);
-        return response.data;
+        const req = update<Developer>(URI_PATH.MAIN.DEVELOPERS, dev.id, dev).then(response => response.data);
+
+        await toast.promise(
+          req,
+          {
+            loading: 'Atualizando desenvolvedor..',
+            success: 'Desenvolvedor atualizado com sucesso!',
+            error: (err) => `Error: ${err.toString()}`,
+          }
+        );
+
+        return req;
       },
       onMutate: (newDevInfo: Developer) => {
         queryClient.setQueryData(
           [ 'developers' ],
           (prevDevelopers: any) =>
             prevDevelopers?.map((prevDev: Developer) =>
-              prevDev.id === newDevInfo.id ? newDevInfo : prevDev,
-            ),
+              prevDev.id === newDevInfo.id ? newDevInfo : prevDev
+            )
         );
       },
       onSettled: () => queryClient.invalidateQueries({ queryKey: [ 'developers' ] }),
@@ -107,16 +130,28 @@ export default function DevTable() {
   }
 
   function useDeleteDeveloper() {
+    const queryClient = useQueryClient();
+
     return useMutation({
       mutationFn: async (devId: string) => {
-        const response = await destroy(URI_PATH.MAIN.DEVELOPERS, devId);
-        return response.data;
+        const req = destroy(URI_PATH.MAIN.DEVELOPERS, devId).then(response => response.data);
+
+        await toast.promise(
+          req,
+          {
+            loading: 'Deletando desenvolvedor..',
+            success: 'Desenvolvedor deletado com sucesso!',
+            error: (err) => `Error: ${err.toString()}`,
+          }
+        );
+
+        return req;
       },
       onMutate: (devId: string) => {
         queryClient.setQueryData(
           [ 'developers' ],
           (prevDevelopers: any) =>
-            prevDevelopers?.filter((dev: Developer) => dev.id !== devId),
+            prevDevelopers?.filter((dev: Developer) => dev.id !== devId)
         );
       },
       onSettled: () => queryClient.invalidateQueries({ queryKey: [ 'developers' ] }),
@@ -246,7 +281,7 @@ export default function DevTable() {
         },
       },
     ],
-    [setValidationErrors, validationErrors],
+    [ setValidationErrors, validationErrors ],
   );
 
   const handleCreateDeveloper: MRT_TableOptions<Developer>['onCreatingRowSave'] =

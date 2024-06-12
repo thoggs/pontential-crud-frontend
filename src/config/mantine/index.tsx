@@ -16,6 +16,7 @@ import TopHeader from '@/app/shered/components/TopHeader';
 import { IconCode } from '@tabler/icons-react';
 import CustomNavLink from '@/app/shered/components/CustomNavLink';
 import { useDisclosure } from '@mantine/hooks';
+import { Toaster } from "react-hot-toast";
 
 export let metadata: Metadata = {
   title: 'Gazin Tech - Thiago Rodrigues',
@@ -27,6 +28,7 @@ export default function RootStyleRegistry({ children }: RootLayoutProps) {
 
   return (
     <MantineProvider theme={theme} defaultColorScheme='auto'>
+      <Toaster/>
       <AppShell
         header={{ height: 64, offset: true }}
         className={classes.appShell}
