@@ -2,7 +2,7 @@
 import {
   MantineProvider,
   AppShell,
-  Container,
+  Container, useMantineColorScheme,
 } from '@mantine/core';
 import '@mantine/core/styles.css';
 import '@mantine/dates/styles.css';
@@ -17,6 +17,7 @@ import { IconCode } from '@tabler/icons-react';
 import CustomNavLink from '@/app/shered/components/CustomNavLink';
 import { useDisclosure } from '@mantine/hooks';
 import { Toaster } from "react-hot-toast";
+import CustomToaster from "@/app/shered/components/CustomToaster";
 
 export let metadata: Metadata = {
   title: 'Gazin Tech - Thiago Rodrigues',
@@ -28,7 +29,7 @@ export default function RootStyleRegistry({ children }: RootLayoutProps) {
 
   return (
     <MantineProvider theme={theme} defaultColorScheme='auto'>
-      <Toaster/>
+      <CustomToaster/>
       <AppShell
         header={{ height: 64, offset: true }}
         className={classes.appShell}
