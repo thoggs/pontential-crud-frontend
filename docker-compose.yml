@@ -9,4 +9,5 @@ services:
     environment:
       NODE_ENV: production
       NEXT_TELEMETRY_DISABLED: 1
+      NEXT_PUBLIC_BASE_URL: 'http://localhost:8080/api'
     restart: unless-stopped
