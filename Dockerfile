@@ -4,7 +4,6 @@ FROM base AS deps
 WORKDIR /app
 
 RUN npm install -g npm@latest
-
 RUN npm install -g corepack
 RUN corepack enable
 RUN corepack prepare yarn@latest --activate
@@ -17,10 +16,12 @@ WORKDIR /app
 COPY --from=deps /app/node_modules ./node_modules
 COPY . .
 
+ARG NEXT_PUBLIC_BASE_URL
 ENV NEXT_TELEMETRY_DISABLED 1
 
 RUN mkdir -p /app/.next/cache/images && chown -R node:node /app/.next/cache
 
+ENV NEXT_PUBLIC_BASE_URL=$NEXT_PUBLIC_BASE_URL
 RUN yarn set version stable && yarn build
 
 FROM base AS runner
@@ -31,6 +32,7 @@ WORKDIR /app
 
 ENV NODE_ENV production
 ENV NEXT_TELEMETRY_DISABLED 1
+ENV NEXT_PUBLIC_BASE_URL=$NEXT_PUBLIC_BASE_URL
 
 RUN addgroup --system --gid 1001 nodejs
 RUN adduser --system --uid 1001 nextjs
