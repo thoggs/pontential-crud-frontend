@@ -11,7 +11,7 @@ This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next
 1) #### Rode o comando em um terminal Linux/macOS ou Prompt de comando do Windows:
 
 ```sh
-git clone https://github.com/thoggs/pontential-crud-frontend.git && cd pontential-crud-frontend && docker-compose up -d --build  
+git clone https://github.com/thoggs/pontential-crud-frontend.git && cd pontential-crud-frontend && docker-compose up -d 
 ```
 
 ### Concluído:
