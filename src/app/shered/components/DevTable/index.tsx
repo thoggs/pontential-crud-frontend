@@ -67,8 +67,6 @@ export default function DevTable() {
   }
 
   function useCreateDeveloper() {
-    const queryClient = useQueryClient();
-
     return useMutation({
       mutationFn: async (dev: Developer) => {
         const req = create<Developer>(URI_PATH.MAIN.DEVELOPERS, dev).then(response => response.data);
@@ -99,8 +97,6 @@ export default function DevTable() {
   }
 
   function useUpdateDeveloper() {
-    const queryClient = useQueryClient();
-
     return useMutation({
       mutationFn: async (dev: Developer) => {
         const req = update<Developer>(URI_PATH.MAIN.DEVELOPERS, dev.id, dev).then(response => response.data);
@@ -130,8 +126,6 @@ export default function DevTable() {
   }
 
   function useDeleteDeveloper() {
-    const queryClient = useQueryClient();
-
     return useMutation({
       mutationFn: async (devId: string) => {
         const req = destroy(URI_PATH.MAIN.DEVELOPERS, devId).then(response => response.data);
