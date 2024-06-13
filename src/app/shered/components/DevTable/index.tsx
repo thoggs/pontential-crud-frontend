@@ -2,7 +2,7 @@
 import { useEffect, useMemo, useState } from 'react';
 import {
   MantineReactTable,
-  type MRT_ColumnDef,
+  type MRT_ColumnDef, MRT_ColumnFilterFnsState, MRT_ColumnFiltersState,
   MRT_EditActionButtons,
   MRT_PaginationState,
   type MRT_Row, MRT_SortingState,
@@ -44,115 +44,6 @@ export default function DevTable() {
   });
   const [ globalFilter, setGlobalFilter ] = useState('');
   const [ sorting, setSorting ] = useState<MRT_SortingState>([]);
-
-  useEffect(() => {
-    refetchUsers().then();
-  }, [ pagination.pageIndex, pagination.pageSize, refetchUsers, globalFilter, sorting ]);
-
-  function useListDevelopers() {
-    return useQuery<Developer[]>({
-      queryKey: [ 'developers' ],
-      queryFn: async () => {
-        const response = await list<MainResponse<Pagination<Developer>>>(URI_PATH.MAIN.DEVELOPERS, {
-          params: {
-            page: pagination.pageIndex + 1,
-            perPage: pagination.pageSize,
-            sorting,
-            searchTerm: globalFilter,
-          },
-        });
-        setRowCount(response.data.model.total);
-        return (response.data.model.data);
-      },
-      refetchOnWindowFocus: false,
-    });
-  }
-
-  function useCreateDeveloper() {
-    return useMutation({
-      mutationFn: async (dev: Developer) => {
-        const req = create<Developer>(URI_PATH.MAIN.DEVELOPERS, dev).then(response => response.data);
-
-        await toast.promise(
-          req,
-          {
-            loading: 'Criando desenvolvedor..',
-            success: 'Desenvolvedor cadastrado com sucesso!',
-            error: (err) => `Error: ${err.toString()}`,
-          },
-        );
-        return req;
-      },
-      onMutate: (newDevInfo: Developer) => {
-        queryClient.setQueryData(
-          [ 'developers' ],
-          (prevDevelopers: Developer[] | undefined) => [
-            ...(prevDevelopers || []),
-            {
-              ...newDevInfo,
-            },
-          ]
-        );
-      },
-      onSettled: () => queryClient.invalidateQueries({ queryKey: [ 'developers' ] }),
-    });
-  }
-
-  function useUpdateDeveloper() {
-    return useMutation({
-      mutationFn: async (dev: Developer) => {
-        const req = update<Developer>(URI_PATH.MAIN.DEVELOPERS, dev.id, dev).then(response => response.data);
-
-        await toast.promise(
-          req,
-          {
-            loading: 'Atualizando desenvolvedor..',
-            success: 'Desenvolvedor atualizado com sucesso!',
-            error: (err) => `Error: ${err.toString()}`,
-          }
-        );
-
-        return req;
-      },
-      onMutate: (newDevInfo: Developer) => {
-        queryClient.setQueryData(
-          [ 'developers' ],
-          (prevDevelopers: any) =>
-            prevDevelopers?.map((prevDev: Developer) =>
-              prevDev.id === newDevInfo.id ? newDevInfo : prevDev
-            )
-        );
-      },
-      onSettled: () => queryClient.invalidateQueries({ queryKey: [ 'developers' ] }),
-    });
-  }
-
-  function useDeleteDeveloper() {
-    return useMutation({
-      mutationFn: async (devId: string) => {
-        const req = destroy(URI_PATH.MAIN.DEVELOPERS, devId).then(response => response.data);
-
-        await toast.promise(
-          req,
-          {
-            loading: 'Deletando desenvolvedor..',
-            success: 'Desenvolvedor deletado com sucesso!',
-            error: (err) => `Error: ${err.toString()}`,
-          }
-        );
-
-        return req;
-      },
-      onMutate: (devId: string) => {
-        queryClient.setQueryData(
-          [ 'developers' ],
-          (prevDevelopers: any) =>
-            prevDevelopers?.filter((dev: Developer) => dev.id !== devId)
-        );
-      },
-      onSettled: () => queryClient.invalidateQueries({ queryKey: [ 'developers' ] }),
-    });
-  }
 
   const columns = useMemo<MRT_ColumnDef<Developer>[]>(
     () => [
@@ -287,6 +178,115 @@ export default function DevTable() {
     [ setValidationErrors, validationErrors ],
   );
 
+  useEffect(() => {
+    refetchUsers().then();
+  }, [ pagination.pageIndex, pagination.pageSize, refetchUsers, globalFilter, sorting, ]);
+
+  function useListDevelopers() {
+    return useQuery<Developer[]>({
+      queryKey: [ 'developers' ],
+      queryFn: async () => {
+        const response = await list<MainResponse<Pagination<Developer>>>(URI_PATH.MAIN.DEVELOPERS, {
+          params: {
+            page: pagination.pageIndex + 1,
+            perPage: pagination.pageSize,
+            searchTerm: globalFilter,
+            sorting: JSON.stringify(sorting ?? []),
+          },
+        });
+        setRowCount(response.data.model.total);
+        return (response.data.model.data);
+      },
+      refetchOnWindowFocus: false,
+    });
+  }
+
+  function useCreateDeveloper() {
+    return useMutation({
+      mutationFn: async (dev: Developer) => {
+        const req = create<Developer>(URI_PATH.MAIN.DEVELOPERS, dev).then(response => response.data);
+
+        await toast.promise(
+          req,
+          {
+            loading: 'Criando desenvolvedor..',
+            success: 'Desenvolvedor cadastrado com sucesso!',
+            error: (err) => `Error: ${err.toString()}`,
+          },
+        );
+        return req;
+      },
+      onMutate: (newDevInfo: Developer) => {
+        queryClient.setQueryData(
+          [ 'developers' ],
+          (prevDevelopers: Developer[] | undefined) => [
+            ...(prevDevelopers || []),
+            {
+              ...newDevInfo,
+            },
+          ]
+        );
+      },
+      onSettled: () => queryClient.invalidateQueries({ queryKey: [ 'developers' ] }),
+    });
+  }
+
+  function useUpdateDeveloper() {
+    return useMutation({
+      mutationFn: async (dev: Developer) => {
+        const req = update<Developer>(URI_PATH.MAIN.DEVELOPERS, dev.id, dev).then(response => response.data);
+
+        await toast.promise(
+          req,
+          {
+            loading: 'Atualizando desenvolvedor..',
+            success: 'Desenvolvedor atualizado com sucesso!',
+            error: (err) => `Error: ${err.toString()}`,
+          }
+        );
+
+        return req;
+      },
+      onMutate: (newDevInfo: Developer) => {
+        queryClient.setQueryData(
+          [ 'developers' ],
+          (prevDevelopers: any) =>
+            prevDevelopers?.map((prevDev: Developer) =>
+              prevDev.id === newDevInfo.id ? newDevInfo : prevDev
+            )
+        );
+      },
+      onSettled: () => queryClient.invalidateQueries({ queryKey: [ 'developers' ] }),
+    });
+  }
+
+  function useDeleteDeveloper() {
+    return useMutation({
+      mutationFn: async (devId: string) => {
+        const req = destroy(URI_PATH.MAIN.DEVELOPERS, devId).then(response => response.data);
+
+        await toast.promise(
+          req,
+          {
+            loading: 'Deletando desenvolvedor..',
+            success: 'Desenvolvedor deletado com sucesso!',
+            error: (err) => `Error: ${err.toString()}`,
+          }
+        );
+
+        return req;
+      },
+      onMutate: (devId: string) => {
+        queryClient.setQueryData(
+          [ 'developers' ],
+          (prevDevelopers: any) =>
+            prevDevelopers?.filter((dev: Developer) => dev.id !== devId)
+        );
+      },
+      onSettled: () => queryClient.invalidateQueries({ queryKey: [ 'developers' ] }),
+    });
+  }
+
   const handleCreateDeveloper: MRT_TableOptions<Developer>['onCreatingRowSave'] =
     async ({
              values,
@@ -346,8 +346,10 @@ export default function DevTable() {
     enableDensityToggle: false,
     enableStickyHeader: true,
     enableFullScreenToggle: false,
-    manualFiltering: true,
+    enableColumnFilters: false,
+    enableColumnActions: false,
     manualPagination: true,
+    manualSorting: true,
     localization: { ...MRT_Localization_PT_BR },
     mantineSearchTextInputProps: {
       placeholder: 'Pesquisar',
