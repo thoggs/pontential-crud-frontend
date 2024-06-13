@@ -5,7 +5,7 @@ import {
   type MRT_ColumnDef,
   MRT_EditActionButtons,
   MRT_PaginationState,
-  type MRT_Row,
+  type MRT_Row, MRT_SortingState,
   type MRT_TableOptions,
   useMantineReactTable,
 } from 'mantine-react-table';
@@ -43,10 +43,11 @@ export default function DevTable() {
     pageSize: 50,
   });
   const [ globalFilter, setGlobalFilter ] = useState('');
+  const [ sorting, setSorting ] = useState<MRT_SortingState>([]);
 
   useEffect(() => {
     refetchUsers().then();
-  }, [ pagination.pageIndex, pagination.pageSize, refetchUsers, globalFilter ]);
+  }, [ pagination.pageIndex, pagination.pageSize, refetchUsers, globalFilter, sorting ]);
 
   function useListDevelopers() {
     return useQuery<Developer[]>({
@@ -56,6 +57,7 @@ export default function DevTable() {
           params: {
             page: pagination.pageIndex + 1,
             perPage: pagination.pageSize,
+            sorting,
             searchTerm: globalFilter,
           },
         });
@@ -368,6 +370,7 @@ export default function DevTable() {
     onEditingRowSave: handleSaveDeveloper,
     onPaginationChange: setPagination,
     onGlobalFilterChange: setGlobalFilter,
+    onSortingChange: setSorting,
     renderCreateRowModalContent: ({ table, row, internalEditComponents }) => (
       <Stack>
         <Title order={3}>Cadastrar Desenvolvedor</Title>
@@ -415,6 +418,7 @@ export default function DevTable() {
       showProgressBars: isFetchingUsers,
       density: 'xs',
       globalFilter,
+      sorting,
       pagination,
     },
   });
