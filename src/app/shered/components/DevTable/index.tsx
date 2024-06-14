@@ -2,16 +2,17 @@
 import { useEffect, useMemo, useState } from 'react';
 import {
   MantineReactTable,
-  type MRT_ColumnDef, MRT_ColumnFilterFnsState, MRT_ColumnFiltersState,
+  type MRT_ColumnDef,
   MRT_EditActionButtons,
   MRT_PaginationState,
-  type MRT_Row, MRT_SortingState,
+  type MRT_Row,
+  MRT_SortingState,
   type MRT_TableOptions,
   useMantineReactTable,
 } from 'mantine-react-table';
 import { ActionIcon, Button, Flex, Stack, Text, Title, Tooltip, } from '@mantine/core';
 import { modals, ModalsProvider } from '@mantine/modals';
-import { IconEdit, IconTrash } from '@tabler/icons-react';
+import { IconEdit, IconEye, IconTrash } from '@tabler/icons-react';
 import { useMutation, useQuery, useQueryClient, } from '@tanstack/react-query';
 import { Developer } from '@/app/shered/types/response/developers';
 import { URI_PATH } from '@/app/shered/constants/path';
@@ -24,7 +25,7 @@ import useDeveloperValidation from "@/app/hooks/useDeveloperValidation";
 import toast from "react-hot-toast";
 
 export default function DevTable() {
-  const { list, create, update, destroy } = useRequest();
+  const { show, list, create, update, destroy } = useRequest();
   const queryClient = useQueryClient();
   const { validateDeveloper, validationErrors, setValidationErrors } = useDeveloperValidation();
   const [ rowCount, setRowCount ] = useState<number>()
@@ -38,6 +39,7 @@ export default function DevTable() {
   const { mutateAsync: createDeveloper, isPending: isCreatingDeveloper } = useCreateDeveloper();
   const { mutateAsync: deleteDeveloper, isPending: isDeletingDeveloper } = useDeleteDeveloper();
   const { mutateAsync: updateDeveloper, isPending: isUpdatingDeveloper } = useUpdateDeveloper();
+  const { mutateAsync: showDeveloper, isPending: isLoadingDeveloper } = useShowDeveloper();
   const [ pagination, setPagination ] = useState<MRT_PaginationState>({
     pageIndex: 0,
     pageSize: 50,
@@ -182,6 +184,14 @@ export default function DevTable() {
     refetchUsers().then();
   }, [ pagination.pageIndex, pagination.pageSize, refetchUsers, globalFilter, sorting, ]);
 
+  function useShowDeveloper() {
+    return useMutation({
+      mutationFn: async (devId: string) => {
+        return show<MainResponse<Developer>>(URI_PATH.MAIN.DEVELOPERS, devId).then(response => response.data.model);
+      },
+    });
+  }
+
   function useListDevelopers() {
     return useQuery<Developer[]>({
       queryKey: [ 'developers' ],
@@ -288,10 +298,11 @@ export default function DevTable() {
   }
 
   const handleCreateDeveloper: MRT_TableOptions<Developer>['onCreatingRowSave'] =
-    async ({
-             values,
-             exitCreatingMode,
-           }) => {
+    async (
+      {
+        values,
+        exitCreatingMode,
+      }) => {
       const newValidationErrors = validateDeveloper(values);
       if (Object.values(newValidationErrors).some((error) => error)) {
         setValidationErrors(newValidationErrors);
@@ -316,6 +327,60 @@ export default function DevTable() {
       await updateDeveloper(values);
       table.setEditingRow(null);
     };
+
+  const openShowModal = (developer: Developer) => {
+    modals.open({
+      title: <Text size='lg' fw={600}>Detalhes do Desenvolvedor</Text>,
+      children: (
+        <Stack gap='md' mt='md'>
+          <Text>
+            <Text size='lg' fw={500}>
+              Id:
+            </Text>
+            {developer.id}
+          </Text>
+          <Text>
+            <Text size='lg' fw={500}>
+              Nome:
+            </Text>
+            {developer.firstName} {developer.lastName}
+          </Text>
+          <Text>
+            <Text size='lg' fw={500}>
+              Email:
+            </Text>
+            {developer.email}
+          </Text>
+          <Text>
+            <Text size='lg' fw={500}>
+              Idade:
+            </Text>
+            {developer.age}
+          </Text>
+          <Text>
+            <Text size='lg' fw={500}>
+              Data de Nascimento:
+            </Text>
+            {moment(developer.birthDate).format('DD/MM/YYYY')}
+          </Text>
+          <Text>
+            <Text size='lg' fw={500}>
+              Gênero:
+            </Text>
+            <Text>
+              {developer.gender}
+            </Text>
+          </Text>
+          <Text>
+            <Text size='lg' fw={500}>
+              Hobby:
+            </Text>
+            {developer.hobby}
+          </Text>
+        </Stack>
+      ),
+    });
+  };
 
   const openDeleteConfirmModal = (row: MRT_Row<Developer>) =>
     modals.openConfirmModal({
@@ -393,6 +458,13 @@ export default function DevTable() {
     ),
     renderRowActions: ({ row, table }) => (
       <Flex gap='md'>
+        <Tooltip label='Visualizar'>
+          <ActionIcon
+            variant='subtle'
+            onClick={async () => await showDeveloper(row.original.id).then((dev) => openShowModal(dev))}>
+            <IconEye/>
+          </ActionIcon>
+        </Tooltip>
         <Tooltip label='Editar'>
           <ActionIcon variant='subtle' onClick={() => table.setEditingRow(row)}>
             <IconEdit/>
