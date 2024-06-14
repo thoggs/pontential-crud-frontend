@@ -10,7 +10,7 @@ import {
   type MRT_TableOptions,
   useMantineReactTable,
 } from 'mantine-react-table';
-import { ActionIcon, Button, Flex, Stack, Text, Title, Tooltip, } from '@mantine/core';
+import { ActionIcon, Box, Button, Flex, Stack, Text, Title, Tooltip, } from '@mantine/core';
 import { modals, ModalsProvider } from '@mantine/modals';
 import { IconEdit, IconEye, IconTrash } from '@tabler/icons-react';
 import { useMutation, useQuery, useQueryClient, } from '@tanstack/react-query';
@@ -329,54 +329,28 @@ export default function DevTable() {
     };
 
   const openShowModal = (developer: Developer) => {
+    const fields = [
+      { label: 'Id', value: developer.id },
+      { label: 'Nome', value: `${developer.firstName} ${developer.lastName}` },
+      { label: 'Email', value: developer.email },
+      { label: 'Idade', value: developer.age },
+      { label: 'Data de Nascimento', value: moment(developer.birthDate).format('DD/MM/YYYY') },
+      { label: 'Gênero', value: GENDERS.find(g => g.value === developer.gender)?.label || 'Não especificado' },
+      { label: 'Hobby', value: developer.hobby }
+    ];
+
     modals.open({
-      title: <Text size='lg' fw={600}>Detalhes do Desenvolvedor</Text>,
+      title: <Text size="lg" fw={600}>Detalhes do Desenvolvedor</Text>,
       children: (
-        <Stack gap='md' mt='md'>
-          <Text>
-            <Text size='lg' fw={500}>
-              Id:
-            </Text>
-            {developer.id}
-          </Text>
-          <Text>
-            <Text size='lg' fw={500}>
-              Nome:
-            </Text>
-            {developer.firstName} {developer.lastName}
-          </Text>
-          <Text>
-            <Text size='lg' fw={500}>
-              Email:
-            </Text>
-            {developer.email}
-          </Text>
-          <Text>
-            <Text size='lg' fw={500}>
-              Idade:
-            </Text>
-            {developer.age}
-          </Text>
-          <Text>
-            <Text size='lg' fw={500}>
-              Data de Nascimento:
-            </Text>
-            {moment(developer.birthDate).format('DD/MM/YYYY')}
-          </Text>
-          <Text>
-            <Text size='lg' fw={500}>
-              Gênero:
-            </Text>
-            <Text>
-              {developer.gender}
-            </Text>
-          </Text>
-          <Text>
-            <Text size='lg' fw={500}>
-              Hobby:
-            </Text>
-            {developer.hobby}
-          </Text>
+        <Stack gap="md" mt="md">
+          {fields.map((field) => (
+            <Box key={field.label}>
+              <Text fw={500}>
+                {field.label}:
+              </Text>
+              <Text>{field.value}</Text>
+            </Box>
+          ))}
         </Stack>
       ),
     });
