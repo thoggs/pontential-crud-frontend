@@ -2,7 +2,7 @@
 import {
   MantineProvider,
   AppShell,
-  Container, useMantineColorScheme,
+  Container,
 } from '@mantine/core';
 import '@mantine/core/styles.css';
 import '@mantine/dates/styles.css';
@@ -16,7 +16,6 @@ import TopHeader from '@/app/shered/components/TopHeader';
 import { IconCode } from '@tabler/icons-react';
 import CustomNavLink from '@/app/shered/components/CustomNavLink';
 import { useDisclosure } from '@mantine/hooks';
-import { Toaster } from "react-hot-toast";
 import CustomToaster from "@/app/shered/components/CustomToaster";
 
 export let metadata: Metadata = {
