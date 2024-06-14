@@ -39,7 +39,7 @@ export default function DevTable() {
   const { mutateAsync: createDeveloper, isPending: isCreatingDeveloper } = useCreateDeveloper();
   const { mutateAsync: deleteDeveloper, isPending: isDeletingDeveloper } = useDeleteDeveloper();
   const { mutateAsync: updateDeveloper, isPending: isUpdatingDeveloper } = useUpdateDeveloper();
-  const { mutateAsync: showDeveloper, isPending: isLoadingDeveloper } = useShowDeveloper();
+  const { mutateAsync: showDeveloper } = useShowDeveloper();
   const [ pagination, setPagination ] = useState<MRT_PaginationState>({
     pageIndex: 0,
     pageSize: 50,
@@ -392,6 +392,9 @@ export default function DevTable() {
     localization: { ...MRT_Localization_PT_BR },
     mantineSearchTextInputProps: {
       placeholder: 'Pesquisar',
+    },
+    mantinePaperProps: {
+      shadow: 'none',
     },
     mantineTableContainerProps: {
       style: {
