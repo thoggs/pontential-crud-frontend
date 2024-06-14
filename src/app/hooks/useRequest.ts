@@ -9,8 +9,8 @@ export default function useRequest() {
     return instance.get(`${path}`, { ...config })
   }
 
-  const show = <T>(path: string, config?: AxiosRequestConfig): AxiosPromise<T> => {
-    return instance.get(`${path}`, { ...config })
+  const show = <T>(path: string, id: string, config?: AxiosRequestConfig): AxiosPromise<T> => {
+    return instance.get(`${path}/${id}`, { ...config })
   }
 
   const create = <T>(path: string, payload: T, id?: string, config?: AxiosRequestConfig): AxiosPromise => {
