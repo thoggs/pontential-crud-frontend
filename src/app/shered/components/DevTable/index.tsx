@@ -219,9 +219,9 @@ export default function DevTable() {
         await toast.promise(
           req,
           {
-            loading: 'Criando desenvolvedor..',
-            success: 'Desenvolvedor cadastrado com sucesso!',
-            error: (err) => `Error: ${err.toString()}`,
+            loading: 'Cadastrando desenvolvedor...',
+            success: <Text fw={500}>Cadastrado com sucesso!</Text>,
+            error: () => <Text fw={500}>Erro ao cadastrar desenvolvedor!</Text>,
           },
         );
         return req;
@@ -249,9 +249,9 @@ export default function DevTable() {
         await toast.promise(
           req,
           {
-            loading: 'Atualizando desenvolvedor..',
-            success: 'Desenvolvedor atualizado com sucesso!',
-            error: (err) => `Error: ${err.toString()}`,
+            loading: 'Atualizando desenvolvedor...',
+            success: <Text fw={500}>Atualizado com sucesso!</Text>,
+            error: () => <Text fw={500}>Erro ao atualizar desenvolvedor!</Text>,
           }
         );
 
@@ -278,9 +278,9 @@ export default function DevTable() {
         await toast.promise(
           req,
           {
-            loading: 'Deletando desenvolvedor..',
-            success: 'Desenvolvedor deletado com sucesso!',
-            error: (err) => `Error: ${err.toString()}`,
+            loading: 'Deletando desenvolvedor...',
+            success: <Text fw={500}>Deletado com sucesso!</Text>,
+            error: () => <Text fw={500}>Erro ao deletar desenvolvedor!</Text>,
           }
         );
 
