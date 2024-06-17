@@ -3,8 +3,8 @@ import RootStyleRegistry from "@/config/mantine";
 import React from "react";
 import { Inter } from 'next/font/google'
 import { ColorSchemeScript } from "@mantine/core";
-import StoreProvider from "@/providers/store/provider";
-import QueryProvider from "@/providers/query/provider";
+import StoreProvider from "@/app/providers/store/provider";
+import QueryProvider from "@/app/providers/query/provider";
 
 const inter = Inter({ subsets: [ 'latin' ] })
 
