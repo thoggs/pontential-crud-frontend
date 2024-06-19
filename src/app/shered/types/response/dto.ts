@@ -23,5 +23,5 @@ export type Pagination<T> = {
 export type MainResponse<T> = {
   code: number;
   message: any[];
-  model: T;
+  data: T;
 }
