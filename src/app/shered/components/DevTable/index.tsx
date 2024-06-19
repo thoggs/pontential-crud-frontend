@@ -187,7 +187,7 @@ export default function DevTable() {
   function useShowDeveloper() {
     return useMutation({
       mutationFn: async (devId: string) => {
-        return show<MainResponse<Developer>>(URI_PATH.MAIN.DEVELOPERS, devId).then(response => response.data.model);
+        return show<MainResponse<Developer>>(URI_PATH.MAIN.DEVELOPERS, devId).then(response => response.data.data);
       },
     });
   }
@@ -204,8 +204,8 @@ export default function DevTable() {
             sorting: JSON.stringify(sorting ?? []),
           },
         });
-        setRowCount(response.data.model.total);
-        return (response.data.model.data);
+        setRowCount(response.data.data.total);
+        return (response.data.data.data);
       },
       refetchOnWindowFocus: false,
     });
