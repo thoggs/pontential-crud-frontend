@@ -1,6 +1,6 @@
 services:
   frontend-app:
-    container_name: frontend-app
+    container_name: pontential-crud-frontend-app
     build:
       context: .
       dockerfile: Dockerfile
