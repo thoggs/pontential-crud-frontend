@@ -21,7 +21,15 @@ export type Pagination<T> = {
 }
 
 export type MainResponse<T> = {
-  code: number;
-  message: any[];
+  success: boolean;
+  metadata: ErrorResponse<ErrorResponseMessage>;
   data: T;
 }
+
+export type ErrorResponse<T> = {
+  message: T;
+}
+
+export type ErrorResponseMessage = {
+  email: string[];
+};

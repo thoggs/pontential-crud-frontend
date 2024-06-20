@@ -23,6 +23,7 @@ import { MRT_Localization_PT_BR } from 'mantine-react-table/locales/pt-BR/index.
 import moment from "moment";
 import useDeveloperValidation from "@/app/hooks/useDeveloperValidation";
 import toast from "react-hot-toast";
+import { AxiosError } from "axios";
 
 export default function DevTable() {
   const { show, list, create, update, destroy } = useRequest();
@@ -204,6 +205,7 @@ export default function DevTable() {
             sorting: JSON.stringify(sorting ?? []),
           },
         });
+
         setRowCount(response.data.data.total);
         return (response.data.data.data);
       },
@@ -221,9 +223,20 @@ export default function DevTable() {
           {
             loading: 'Cadastrando desenvolvedor...',
             success: <Text fw={500}>Cadastrado com sucesso!</Text>,
-            error: () => <Text fw={500}>Erro ao cadastrar desenvolvedor!</Text>,
+            error: (error: AxiosError<MainResponse<[]>>) => {
+              error.response?.data?.metadata.message.email?.forEach((emailError: string) => {
+                if (emailError.includes('email')) {
+                  setValidationErrors({
+                    ...validationErrors,
+                    email: 'Email já cadastrado',
+                  });
+                }
+              });
+              return <Text fw={500}>Erro ao cadastrar desenvolvedor!</Text>
+            },
           },
         );
+
         return req;
       },
       onMutate: (newDevInfo: Developer) => {
@@ -251,7 +264,17 @@ export default function DevTable() {
           {
             loading: 'Atualizando desenvolvedor...',
             success: <Text fw={500}>Atualizado com sucesso!</Text>,
-            error: () => <Text fw={500}>Erro ao atualizar desenvolvedor!</Text>,
+            error: (error: AxiosError<MainResponse<[]>>) => {
+              error.response?.data?.metadata.message.email?.forEach((emailError: string) => {
+                if (emailError.includes('email')) {
+                  setValidationErrors({
+                    ...validationErrors,
+                    email: 'Email já cadastrado',
+                  });
+                }
+              });
+              return <Text fw={500}>Erro ao atualizar desenvolvedor!</Text>;
+            },
           }
         );
 
