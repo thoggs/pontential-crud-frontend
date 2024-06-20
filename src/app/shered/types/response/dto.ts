@@ -31,5 +31,10 @@ export type ErrorResponse<T> = {
 }
 
 export type ErrorResponseMessage = {
+  firstName: string[];
+  lastName: string[];
   email: string[];
+  age: string[];
+  birthDate: string[];
+  hobby: string[];
 };
