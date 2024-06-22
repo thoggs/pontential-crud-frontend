@@ -1,8 +1,8 @@
 # Pontential
 
 <p align="center" width="100%">
-    <img width="22%" src="https://www.vectorlogo.zone/logos/reactjs/reactjs-ar21.svg" alt="Node.js Logo">
-    <img width="12%" src="https://www.svgrepo.com/show/354112/nextjs.svg" alt="Express.js Logo">
+    <img width="25%" src="https://www.vectorlogo.zone/logos/reactjs/reactjs-ar21.svg" alt="Node.js Logo">
+    <img width="15%" src="https://www.svgrepo.com/show/354112/nextjs.svg" alt="Express.js Logo">
 </p>
 
 ## Descrição
@@ -34,6 +34,7 @@ project-root/
 │   │   └── mantine/
 ├── Dockerfile
 ├── docker-compose.yml
+└── ...
 ```
 
 ## Pré-requisitos
