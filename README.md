@@ -1,25 +1,56 @@
-<div align="center">
-  <img src="https://www.vectorlogo.zone/logos/reactjs/reactjs-ar21.svg" alt="React Logo" style="vertical-align: middle; margin-right: 20px;" />
-  <img src="https://www.svgrepo.com/show/354112/nextjs.svg" alt="Next.js Logo" width="80" style="vertical-align: middle;" />
-</div>
+# Pontential
+
+<p align="center" width="100%">
+    <img width="22%" src="https://www.vectorlogo.zone/logos/reactjs/reactjs-ar21.svg" alt="Node.js Logo">
+    <img width="12%" src="https://www.svgrepo.com/show/354112/nextjs.svg" alt="Express.js Logo">
+</p>
+
+## Descrição
+
+Este é um projeto de frontend utilizando React e NextJS. Ele inclui a configuração inicial do projeto, componentes
+básicos e rotas para manipulação de dados em um backend.
+
+## Estrutura do Projeto
+
+```
+project-root/
+├── src/
+│   ├── app/
+│   │   ├── (pages)/
+│   │   │   └── developers/
+│   │   ├── hooks/
+│   │   ├── providers/
+│   │   ├── shared/
+│   │   │   ├── components/
+│   │   │   ├── constants/
+│   │   │   └── types/
+│   │   ├── store/
+│   │   │   ├── reducers/
+│   │   │   └── slices/
+│   │   ├── favicon.ico
+│   │   ├── layout.tsx
+│   │   └── page.tsx
+│   ├── config/
+│   │   └── mantine/
+├── Dockerfile
+├── docker-compose.yml
+```
 
 ### Requisitos
 
-- [x] Ter o [Docker](https://www.docker.com/) instalado
-- [x] Ter o [GIT](https://git-scm.com/downloads) instalado
-- [x] Conexão com a internet
+- Ter o [Docker](https://www.docker.com/) instalado
+- Ter o [GIT](https://git-scm.com/downloads) instalado
+- Conexão com a internet
 
-### Clonando e subindo um container Docker do React/NextJS na porta 8081
+## Inicialização Rápida
 
-1) #### Rode o comando em um terminal Linux/macOS ou Prompt de comando do Windows:
+Rode o comando em um terminal Linux/macOS ou Prompt de comando do Windows:
 
-```sh
+```bash
 git clone https://github.com/thoggs/pontential-crud-frontend.git && cd pontential-crud-frontend && docker-compose up -d 
 ```
 
-### Concluído:
-
-> Agora temos o React rodando localmente no endereço http://localhost:8081
+> O projeto estará disponível em http://localhost:8081
 
 ### License
 
