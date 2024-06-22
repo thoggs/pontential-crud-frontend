@@ -36,11 +36,10 @@ project-root/
 ├── docker-compose.yml
 ```
 
-### Requisitos
+## Requisitos
 
 - Ter o [Docker](https://www.docker.com/) instalado
 - Ter o [GIT](https://git-scm.com/downloads) instalado
-- Conexão com a internet
 
 ## Inicialização Rápida
 
@@ -52,6 +51,6 @@ git clone https://github.com/thoggs/pontential-crud-frontend.git && cd pontentia
 
 > O projeto estará disponível em http://localhost:8081
 
-### License
+## License
 
 Project license [Apache-2.0](https://opensource.org/license/apache-2-0)
