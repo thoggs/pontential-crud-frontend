@@ -36,7 +36,7 @@ project-root/
 ├── docker-compose.yml
 ```
 
-## Requisitos
+## Pré-requisitos
 
 - Ter o [Docker](https://www.docker.com/) instalado
 - Ter o [GIT](https://git-scm.com/downloads) instalado
